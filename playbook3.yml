@@ -1,0 +1,31 @@
+
+---
+- name: Install Apache and Upload my Web Page
+  hosts: all
+  become: yes
+
+
+  vars:
+    source_file: ./MySite/index.html
+    source_dir: ./MySite/SimpleSite_files
+    destination: /var/www/html
+
+
+  tasks:
+  - name: Install Apache Web Server
+    apt: name=apache2 state=latest
+
+  - name: Copy MyHomePage to Servers
+    copy: src={{ source_file }} dest={{ destination }} mode=0555
+    notify: Restart Apache
+
+  - name: Copy WebFiles
+    copy: src={{ source_dir }} dest={{ destination }} mode=0555
+
+  - name: Start WebService and make it enable on boot
+    service: name=apache2 state=started enabled=yes
+
+
+  handlers:
+  - name: Restart Apache
+    service: name=apache2 state=restarted
