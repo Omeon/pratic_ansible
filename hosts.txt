@@ -4,4 +4,3 @@ linux_test ansible_host=192.168.0.102
 
 [production_server]
 linux_prod ansible_host=192.168.0.107 
-
