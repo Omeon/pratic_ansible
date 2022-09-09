@@ -1,10 +1,37 @@
 
 ---
-- name: Test Connection to my servers
+- name: My Practic Playbook for Variables
   hosts: all
   become: yes
 
+
+  vars:
+    Message1: Privet
+    Message2: World
+    secret:  fjsnfjkneoifhpseoif
+
   tasks:
 
-  - name: Ping my servers
-    ping:
+  - name: print secret variable
+    debug:
+      var: secret
+
+  - debug:
+      msg: "secretnoe clovo: {{ secret }}"
+
+  - debug:
+      msg: "Vladelec Etogo Servera -->{{ owner }}"
+
+  - set_fact: full_message="{{ Message1 }} {{ Message2 }} from {{owner}}"
+
+  - debug:
+      var: full_message
+
+  - debug:
+      var: ansible_distribution
+
+  - shell: uptime
+    register: results
+
+  - debug:
+      var: results.stdout
