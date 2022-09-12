@@ -11,24 +11,30 @@
 
 
   tasks:
-  - name: Install Apache Web Server for Debian Family OS
-    apt: name=apache2 state=latest
+  - block: # Block for Debian 
+    - name: Install Apache Web Server for Debian Family OS
+      apt: name=apache2 state=latest
+
+    - name: Copy MyHomePage to Servers
+      copy: src={{ source_file }} dest={{ destination }} mode=0555
+      notify: Restart Apache Debian
+
+    - name: Start WebService and make it enable on boot for Debian
+      service: name=apache2 state=started enabled=yes
+
     when: ansible_os_family == "Debian"
 
-  - name: Install Apache Web Server for RedHat
-    yum: name=httpd state=latest
-    when: ansible_os_family == "RedHat" # != - not equal, for example: ansible_os_family != "RedHat"
+  - block: # Block for RedHat
+    - name: Install Apache Web Server for RedHat
+      yum: name=httpd state=latest
 
-  - name: Copy MyHomePage to Servers
-    copy: src={{ source_file }} dest={{ destination }} mode=0555
-#    notify: Restart Apache
+    - name: Copy MyHomePage to Servers
+      copy: src={{ source_file }} dest={{ destination }} mode=0555
+      notify: Restart Apache Debian RedHat
 
-  - name: Start WebService and make it enable on boot for Debian
-    service: name=apache2 state=started enabled=yes
-    when: ansible_os_family == "Debian"
+    - name: Start WebService and make it enable on boot for RedHat
+      service: name=httpd state=started enabled=yes
 
-  - name: Start WebService and make it enable on boot for RedHat
-    service: name=httpd state=started enabled=yes
     when: ansible_os_family == "RedHat"
 
   handlers:
