@@ -1,6 +1,6 @@
 
 [testing_server]
-linux_test ansible_host=192.168.0.102 
+linux_test ansible_host=192.168.0.105
 
 [production_server]
-linux_prod ansible_host=192.168.0.107 
+linux_prod ansible_host=192.168.0.101
