@@ -1,0 +1,39 @@
+
+---
+- name: Install Apache and Upload my Web Page
+  hosts: all
+  become: yes
+
+
+  vars:
+    source_file: ./MySite/index.html
+    destination: /var/www/html
+
+
+  tasks:
+  - name: Install Apache Web Server for Debian Family OS
+    apt: name=apache2 state=latest
+    when: ansible_os_family == "Debian"
+
+  - name: Install Apache Web Server for RedHat
+    yum: name=httpd state=latest
+    when: ansible_os_family == "RedHat" # != - not equal, for example: ansible_os_family != "RedHat"
+
+  - name: Copy MyHomePage to Servers
+    copy: src={{ source_file }} dest={{ destination }} mode=0555
+#    notify: Restart Apache
+
+  - name: Start WebService and make it enable on boot for Debian
+    service: name=apache2 state=started enabled=yes
+    when: ansible_os_family == "Debian"
+
+  - name: Start WebService and make it enable on boot for RedHat
+    service: name=httpd state=started enabled=yes
+    when: ansible_os_family == "RedHat"
+
+  handlers:
+  - name: Restart Apache Redhat
+    service: name=httpd state=restarted
+
+  - name: Restart Apache Debian
+    service: name=apache2 state=restarted
