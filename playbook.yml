@@ -1,0 +1,23 @@
+
+---
+- name: Install Apache and Upload my Web Page
+  hosts: all
+  become: yes
+
+  vars:
+    mytext: "Vsem serdechnyi"
+
+  tasks:
+  - name: Ping my servers
+    ping:
+
+  - name: Create folders
+    include_tasks: create_folders.yml
+
+  # First option
+  - name: Deleting folders
+    include_tasks: deleting_folders.yml
+
+  # Second option
+  - include_tasks: deleting_files.yml # mytext="Hello from old home"
+
