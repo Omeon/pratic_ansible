@@ -29,10 +29,15 @@
 
     when: ansible_os_family == "RedHat"
 
+  - name: Generate index.html file
+    template: src={{ source_folder }}/index.j2 dest={{ destination_folder }}/index.html mode=755
+    notify:
+      - Restart Apache Debian
+      - Restart Apache RedHat
+
   - name: Copy MyHomePage to Servers
-    copy: src={{ source_folder }}/{{ item }} dest={{ destination_folder }} mode=0555
+    copy: src={{ source_folder }}/{{ item }} dest={{ destination_folder }} mode=755
     loop:
-      - "index.html"
       - "image1.png"
 # or this method for copy all file from folder:
 #   copy: src={{ item }} dest={{ destination_folder}} mode=0555

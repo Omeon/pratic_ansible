@@ -1,6 +1,6 @@
 
 [testing_server]
-linux_test ansible_host=192.168.0.105
+linux_test ansible_host=192.168.0.105 owner="testing server"
 
 [production_server]
-linux_prod ansible_host=192.168.0.101
+linux_prod ansible_host=192.168.0.101 owner="production server"
