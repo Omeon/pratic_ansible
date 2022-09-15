@@ -1,0 +1,28 @@
+
+---
+- name: Ansible Lesson 20 - Practic ansible-vault
+  hosts: all
+  become: yes
+
+  vars:
+    admin_password: !vault |  # pass for decrypt - play
+          $ANSIBLE_VAULT;1.1;AES256
+          35353534303731383938323236613137393261623933383537666136353830396430386265333837
+          6531303661623433623261393366313035353437323233340a393433633964313961626137363736
+          33656336313135623633666262626466303563653463393735376234306334303931316231303962
+          3332373361316263390a356366383464303137396566333663386436616165323937343139373462
+          3863
+
+  tasks:
+  - name: Install package Tree
+    apt: name=tree state=latest
+
+  - name: Create Config File
+    copy:
+      dest: "/home/myconfig.conf"
+      content: |
+        port = 9092
+        log = 7days
+        home = /opt/kafka/bin
+        user = admin
+        password = {{ admin_password }}
