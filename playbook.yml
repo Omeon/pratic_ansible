@@ -1,6 +1,6 @@
 
 ---
-- name: Install Apache and Upload my Web Page
+- name: Install Apache and Upload my Web Page (practic delegate tasks)
   hosts: all
   become: yes
 
