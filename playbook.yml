@@ -1,6 +1,6 @@
 
 ---
-- name: Install Apache and Upload my Web Page
+- name: practic include_tasks
   hosts: all
   become: yes
 
